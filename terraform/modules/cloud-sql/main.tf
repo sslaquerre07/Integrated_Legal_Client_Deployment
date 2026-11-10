@@ -1,3 +1,10 @@
+# Read the password from Secret Manager for the Cloud SQL user.
+data "google_secret_manager_secret_version" "db_password" {
+  project = var.project_id
+  secret  = "DB_PASSWORD"
+  version = "latest"
+}
+
 # Instance for PostgreSQL database
 resource "google_sql_database_instance" "postgresql_instance" {
   name             = "ilcp-postgresql-instance"
@@ -23,5 +30,5 @@ resource "google_sql_database" "dev_database" {
 resource "google_sql_user" "db_user" {
   name     = "ilcp_user"
   instance = google_sql_database_instance.postgresql_instance.name
-  password = var.db_password
+  password = data.google_secret_manager_secret_version.db_password.secret_data
 }

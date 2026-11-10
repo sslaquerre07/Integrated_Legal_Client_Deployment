@@ -1,20 +1,13 @@
-data "google_secret_manager_secret_version" "db_password" {
-  project = var.project_id
-  secret  = "DB_PASSWORD"
-  version = "latest"
+module "cloud_sql" {
+  source     = "./modules/cloud-sql"
+  project_id = var.project_id
+  region     = var.region
 }
 
 module "cloud_storage" {
   source     = "./modules/storage"
   project_id = var.project_id
   region     = var.region
-}
-
-module "cloud_sql" {
-  source      = "./modules/cloud-sql"
-  project_id  = var.project_id
-  region      = var.region
-  db_password = data.google_secret_manager_secret_version.db_password.secret_data
 }
 
 module "frontend" {
