@@ -28,6 +28,7 @@ module "frontend" {
   env_vars = [
     { name = "API_URL", value = "https://api.example.com" }
   ]
+  members = ["allUsers"]
 }
 
 module "backend" {

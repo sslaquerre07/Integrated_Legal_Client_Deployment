@@ -1,3 +1,4 @@
+# Generic variables for the Cloud Run module
 variable "project_id" {
   description = "The GCP project ID where resources will be created."
   type        = string
@@ -7,6 +8,7 @@ variable "region" {
   type        = string
 }
 
+# Cloud Run specific variables
 variable "service_name" {
   description = "The unique name of the Cloud Run service and its service account."
   type        = string
@@ -53,4 +55,9 @@ variable "env_secret_vars" {
     }))
   }))
   default = []
+}
+variable "members" {
+  description = "IAM members to grant access to the Cloud Run service account."
+  type        = list(string)
+  default     = []
 }

@@ -43,6 +43,7 @@ module "cloud_run" {
   env_vars              = var.env_vars
   env_secret_vars       = var.env_secret_vars
   template_annotations  = var.template_annotations
+  members               = var.members
   service_account_email = module.service_account.email
 
   depends_on = [
