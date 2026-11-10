@@ -30,6 +30,36 @@ gcloud init
 gcloud auth application-default login
 ```
 
+## Terraform
+
+Terraform is installed in the dev container. To configure it, create
+`terraform/terraform.tfvars` with the Google Cloud project ID you want to use:
+
+```hcl
+project_id = "your-google-cloud-project-id"
+```
+
+That file is gitignored, so provide your own local copy. The region defaults to
+`us-west1`; you can override it by adding `region = "your-region"` to the same
+file. Ensure your Google credentials can create the configured resources and
+read the `DB_PASSWORD` Secret Manager secret in that project.
+
+Then initialize, review, and apply the configuration:
+
+```sh
+cd terraform
+terraform init
+terraform validate
+terraform plan
+terraform apply
+```
+
+The current configuration creates Cloud Run frontend/backend services, a
+Cloud SQL PostgreSQL instance and database, and a Cloud Storage bucket. The
+frontend currently permits unauthenticated access; both services still use
+Google's sample hello image. See the [Terraform README](terraform/README.md)
+for resource details, prerequisites, and state/security notes.
+
 ---
 
 ## Available Tools inside Container
