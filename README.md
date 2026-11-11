@@ -4,7 +4,7 @@ This repository contains the infrastructure configurations, Terraform scripts, a
 
 ## Prerequisites & Getting Started
 
-To ensure a consistent development environment across all machines, this project uses **VS Code Dev Containers**.
+To ensure a consistent development environment across all machines, this project uses **VS Code Dev Containers**
 
 ### 1. Setting Up the Dev Container
 
