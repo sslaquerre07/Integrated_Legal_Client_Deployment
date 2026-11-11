@@ -17,7 +17,7 @@ module "frontend" {
   service_name = "ilcp-frontend"
 
   image_name     = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/frontend:4338b4f103ebd085c34b5755764d41e84724f894"
-  container_port = { name = "http1", port = 80 }
+  container_port = { name = "http1", port = 3000 }
   env_vars = [
     { name = "API_URL", value = module.backend.service_url }
   ]
@@ -32,7 +32,7 @@ module "backend" {
   service_name = "ilcp-backend"
 
   image_name                    = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/backend:4338b4f103ebd085c34b5755764d41e84724f894"
-  container_port                = { name = "http1", port = 8080 }
+  container_port                = { name = "http1", port = 3001 }
   service_account_project_roles = ["${var.project_id}=>roles/cloudsql.client"]
   template_annotations = {
     "run.googleapis.com/cloudsql-instances" = module.cloud_sql.postgresql_connection_name
