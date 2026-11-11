@@ -57,8 +57,8 @@ terraform apply
 The current configuration creates Cloud Run frontend/backend services, a
 Cloud SQL PostgreSQL instance and database, and a Cloud Storage bucket. The
 frontend currently permits unauthenticated access; both services still use
-Google's sample hello image. See the [Terraform README](terraform/README.md)
-for resource details, prerequisites, and state/security notes.
+sample images. See the [Terraform README](terraform/README.md)for resource 
+details, prerequisites, and state/security notes.
 
 ---
 
