@@ -30,7 +30,6 @@ resource "google_secret_manager_secret_iam_member" "secret_accessor" {
   member    = "serviceAccount:${module.service_account.email}"
 }
 
-# Using a sample image for now, will update to the actual image later
 module "cloud_run" {
   source  = "GoogleCloudPlatform/cloud-run/google"
   version = "~> 0.16"
