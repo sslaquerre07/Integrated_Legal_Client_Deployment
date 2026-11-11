@@ -13,7 +13,7 @@ resource "google_sql_database_instance" "postgresql_instance" {
 
   settings {
     edition = "ENTERPRISE"
-    tier = "db-g1-small"
+    tier    = "db-g1-small"
 
     # Keep single-zone (ZONAL) to avoid doubling costs
     availability_type = "ZONAL"
