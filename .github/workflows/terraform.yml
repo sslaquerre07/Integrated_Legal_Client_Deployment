@@ -24,11 +24,6 @@ jobs:
           create_credentials_file: 'true'
           workload_identity_provider: 'projects/1016575016586/locations/global/workloadIdentityPools/cicd-pool/providers/github-provider'
           service_account: 'cicd-service-account@integrated-legal-client-portal.iam.gserviceaccount.com'
-    - id: 'gcloud'
-      name: 'gcloud'
-      run: |-
-        gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
-        gcloud services list
     - name: Terraform Format
       run: terraform fmt -check
       working-directory: terraform
