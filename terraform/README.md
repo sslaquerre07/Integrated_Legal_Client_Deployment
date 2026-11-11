@@ -10,13 +10,12 @@ configuration in `main.tf` composes three modules:
 - **Cloud Storage** (`modules/storage`): a standard storage bucket with the
   `ilcp-storage-bucket` prefix and `dev` name.
 - **Cloud Run** (`modules/cloud_run`): `ilcp-frontend` and `ilcp-backend`, each
-  with its own service account. Both currently use Google's sample hello image
-  on port 8080. The frontend grants `allUsers` the invoker role, so it allows
-  unauthenticated requests. The backend has no public invoker binding; its
-  ingress setting allows external routing, but callers still need permission.
+  with its own service account. Both currently a sample image (eventually will be ours)
+  on designated ports. The frontend grants `allUsers` the invoker role, so it allows
+  unauthenticated requests. The backend allows calls from the frontend but nowhere else,
+  later we will configure the VPC.
 
 The backend service account is granted Cloud SQL Client access. Its Cloud Run
 service is configured to connect to the Cloud SQL instance and receives the
 `DB_PASSWORD` secret as an environment variable. The frontend's `API_URL` is
-currently an example URL (`https://api.example.com`), not the deployed backend
-URL.
+the url of the deployed backend service (this will also change)
