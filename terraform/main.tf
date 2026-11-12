@@ -16,7 +16,7 @@ module "frontend" {
   region       = var.region
   service_name = "ilcp-frontend"
 
-  image_name     = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/frontend:e834fb8bae3bf5efd6a2e65e5798d5984588b241"
+  image_name     = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/frontend:c9e008735e41f66e833241aa62af7cd48cb5d96b
   container_port = { name = "http1", port = 3000 }
   env_vars = [
     { name = "API_URL", value = module.backend.service_url }
@@ -31,7 +31,7 @@ module "backend" {
   region       = var.region
   service_name = "ilcp-backend"
 
-  image_name                    = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/backend:1e06c0a8d833ccacc24fa2e8977a12e2ed466976"
+  image_name                    = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/backend:c9e008735e41f66e833241aa62af7cd48cb5d96b
   container_port                = { name = "http1", port = 3001 }
   service_account_project_roles = ["${var.project_id}=>roles/cloudsql.client"]
   template_annotations = {
