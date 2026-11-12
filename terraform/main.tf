@@ -16,7 +16,7 @@ module "frontend" {
   region       = var.region
   service_name = "ilcp-frontend"
 
-  image_name     = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/frontend:4338b4f103ebd085c34b5755764d41e84724f894"
+  image_name     = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/frontend:e834fb8bae3bf5efd6a2e65e5798d5984588b241"
   container_port = { name = "http1", port = 3000 }
   env_vars = [
     { name = "API_URL", value = module.backend.service_url }
@@ -31,7 +31,7 @@ module "backend" {
   region       = var.region
   service_name = "ilcp-backend"
 
-  image_name                    = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/backend:4338b4f103ebd085c34b5755764d41e84724f894"
+  image_name                    = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/backend:1e06c0a8d833ccacc24fa2e8977a12e2ed466976"
   container_port                = { name = "http1", port = 3001 }
   service_account_project_roles = ["${var.project_id}=>roles/cloudsql.client"]
   template_annotations = {
@@ -39,12 +39,11 @@ module "backend" {
   }
 
   env_vars = [
-    {
-      name  = "DATABASE_URL"
-      value = "postgresql://ilcp_user@/dev?host=/cloudsql/${module.cloud_sql.postgresql_connection_name}"
-    },
-    { name = "GCP_PROJECT", value = var.project_id },
-    { name = "GCP_BUCKET", value = module.cloud_storage.ids["dev"] }
+    { name = "DB_HOST", value = module.cloud_sql.postgresql_connection_name },
+    { name = "DB_NAME", value = "dev" },
+    { name = "DB_USER", value = "ilcp_user" },
+    { name = "GCP_PROJECT_ID", value = var.project_id },
+    { name = "STORAGE_BUCKET_NAME", value = module.cloud_storage.ids["dev"] }
   ]
   env_secret_vars = [
     {
