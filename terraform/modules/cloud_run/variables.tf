@@ -31,6 +31,14 @@ variable "template_annotations" {
   default     = {}
 }
 
+variable "service_annotations" {
+  description = "Cloud Run service annotations."
+  type        = map(string)
+  default = {
+    "run.googleapis.com/ingress" = "all"
+  }
+}
+
 variable "container_port" {
   description = "The port on which the container listens for requests."
   type = object({

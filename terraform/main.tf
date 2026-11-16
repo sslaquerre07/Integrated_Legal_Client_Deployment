@@ -1,7 +1,14 @@
-module "cloud_sql" {
-  source     = "./modules/cloud-sql"
+module "cloud_vpc" {
+  source     = "./modules/cloud_network"
   project_id = var.project_id
   region     = var.region
+}
+
+module "cloud_sql" {
+  source                = "./modules/cloud-sql"
+  project_id            = var.project_id
+  region                = var.region
+  vpc_network_self_link = module.cloud_vpc.network_self_link
 }
 
 module "cloud_storage" {
@@ -21,6 +28,10 @@ module "frontend" {
   env_vars = [
     { name = "API_URL", value = module.backend.service_url }
   ]
+  template_annotations = {
+    "run.googleapis.com/vpc-access-connector" = module.cloud_vpc.connector_id
+    "run.googleapis.com/vpc-access-egress"    = "all-traffic"
+  }
 
   members = ["allUsers"]
 }
@@ -31,15 +42,18 @@ module "backend" {
   region       = var.region
   service_name = "ilcp-backend"
 
-  image_name                    = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/backend:4e4b9805926beda462040422be8c9d6b33b77555"
-  container_port                = { name = "http1", port = 3001 }
-  service_account_project_roles = ["${var.project_id}=>roles/cloudsql.client"]
+  image_name     = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/backend:4e4b9805926beda462040422be8c9d6b33b77555"
+  container_port = { name = "http1", port = 3001 }
   template_annotations = {
-    "run.googleapis.com/cloudsql-instances" = module.cloud_sql.postgresql_connection_name
+    "run.googleapis.com/vpc-access-connector" = module.cloud_vpc.connector_id
+    "run.googleapis.com/vpc-access-egress"    = "all-traffic"
+  }
+  service_annotations = {
+    "run.googleapis.com/ingress" = "internal"
   }
 
   env_vars = [
-    { name = "DB_HOST", value = module.cloud_sql.postgresql_connection_name },
+    { name = "DB_HOST", value = module.cloud_sql.private_ip_address },
     { name = "DB_NAME", value = "dev" },
     { name = "DB_USER", value = "ilcp_user" },
     { name = "GCP_PROJECT_ID", value = var.project_id },

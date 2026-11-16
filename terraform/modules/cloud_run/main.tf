@@ -41,6 +41,7 @@ module "cloud_run" {
   ports                 = var.container_port
   env_vars              = var.env_vars
   env_secret_vars       = var.env_secret_vars
+  service_annotations   = var.service_annotations
   template_annotations  = var.template_annotations
   members               = var.members
   service_account_email = module.service_account.email
