@@ -5,7 +5,7 @@ data "google_secret_manager_secret_version" "db_password" {
   version = "latest"
 }
 
-# Instance for PostgreSQL database
+# Create a private IP range for the Cloud SQL instance to use.
 resource "google_compute_global_address" "private_ip_range" {
   name          = "ilcp-cloud-sql-private-ip-range"
   project       = var.project_id
@@ -14,13 +14,13 @@ resource "google_compute_global_address" "private_ip_range" {
   prefix_length = 16
   network       = var.vpc_network_self_link
 }
-
 resource "google_service_networking_connection" "private_vpc_connection" {
   network                 = var.vpc_network_self_link
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_range.name]
 }
 
+# Instance for PostgreSQL database
 resource "google_sql_database_instance" "postgresql_instance" {
   name             = "ilcp-postgresql-instance"
   database_version = "POSTGRES_16"
@@ -40,7 +40,6 @@ resource "google_sql_database_instance" "postgresql_instance" {
   }
 
   depends_on = [
-    google_project_service.sql_admin_api,
     google_service_networking_connection.private_vpc_connection
   ]
 }
