@@ -7,6 +7,9 @@ module "cloud_storage" {
 
   prefix = "ilcp-storage-bucket"
   names  = ["dev"]
+  versioning = {
+    enabled = true
+  }
 
   storage_class = "STANDARD"
 

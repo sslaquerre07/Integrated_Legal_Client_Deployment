@@ -31,10 +31,10 @@ resource "google_secret_manager_secret_iam_member" "secret_accessor" {
 }
 
 resource "google_cloud_run_v2_service" "cloud_run" {
-  name        = var.service_name
-  project     = var.project_id
-  location    = var.region
-  annotations = var.service_annotations
+  name     = var.service_name
+  project  = var.project_id
+  location = var.region
+  ingress  = var.ingress
 
   template {
     service_account = module.service_account.email

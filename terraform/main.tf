@@ -25,11 +25,13 @@ module "frontend" {
 
   image_name     = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/frontend:ff4975fd950fe9842f31242a6ad9cb8f0d1c5e8e"
   container_port = { name = "http1", port = 3000 }
+  ingress        = "INGRESS_TRAFFIC_ALL"
+
   env_vars = [
     { name = "API_URL", value = module.backend.service_url }
   ]
 
-  vpc_network    = module.cloud_vpc.network_self_link
+  vpc_network    = "projects/${var.project_id}/global/networks/${module.cloud_vpc.vpc_name}"
   vpc_subnetwork = module.cloud_vpc.subnets["${var.region}/cloud-run-subnet"]["name"]
 
   members = ["allUsers"]
@@ -43,14 +45,10 @@ module "backend" {
 
   image_name     = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/backend:4e4b9805926beda462040422be8c9d6b33b77555"
   container_port = { name = "http1", port = 3001 }
-  service_annotations = {
-    "run.googleapis.com/ingress" = "internal"
-  }
+  ingress        = "INGRESS_TRAFFIC_INTERNAL_ONLY"
 
   env_vars = [
-    { name = "DB_HOST", value = module.cloud_sql.private_ip_address },
-    { name = "DB_NAME", value = "dev" },
-    { name = "DB_USER", value = "ilcp_user" },
+    { name = "DATABASE_URL", value = "postgresql://ilcp_user@${module.cloud_sql.private_ip_address}:5432/dev" },
     { name = "GCP_PROJECT_ID", value = var.project_id },
     { name = "STORAGE_BUCKET_NAME", value = module.cloud_storage.ids["dev"] }
   ]
@@ -68,7 +66,7 @@ module "backend" {
     }
   ]
 
-  vpc_network    = module.cloud_vpc.network_self_link
+  vpc_network    = "projects/${var.project_id}/global/networks/${module.cloud_vpc.vpc_name}"
   vpc_subnetwork = module.cloud_vpc.subnets["${var.region}/cloud-run-subnet"]["name"]
 }
 
