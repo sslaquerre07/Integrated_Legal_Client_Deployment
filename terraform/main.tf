@@ -23,7 +23,7 @@ module "frontend" {
   region       = var.region
   service_name = "ilcp-frontend"
 
-  image_name     = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/frontend:e834fb8bae3bf5efd6a2e65e5798d5984588b241"
+  image_name     = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/frontend:ff4975fd950fe9842f31242a6ad9cb8f0d1c5e8e"
   container_port = { name = "http1", port = 3000 }
   env_vars = [
     { name = "API_URL", value = module.backend.service_url }
