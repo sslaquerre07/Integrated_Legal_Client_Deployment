@@ -30,23 +30,66 @@ resource "google_secret_manager_secret_iam_member" "secret_accessor" {
   member    = "serviceAccount:${module.service_account.email}"
 }
 
-module "cloud_run" {
-  source  = "GoogleCloudPlatform/cloud-run/google"
-  version = "~> 0.16"
+resource "google_cloud_run_v2_service" "cloud_run" {
+  name        = var.service_name
+  project     = var.project_id
+  location    = var.region
+  annotations = var.service_annotations
 
-  service_name          = var.service_name
-  project_id            = var.project_id
-  location              = var.region
-  image                 = var.image_name
-  ports                 = var.container_port
-  env_vars              = var.env_vars
-  env_secret_vars       = var.env_secret_vars
-  template_annotations  = var.template_annotations
-  members               = var.members
-  service_account_email = module.service_account.email
+  template {
+    service_account = module.service_account.email
+
+    containers {
+      image = var.image_name
+
+      dynamic "env" {
+        for_each = var.env_vars
+        content {
+          name  = env.value.name
+          value = env.value.value
+        }
+      }
+
+      dynamic "env" {
+        for_each = var.env_secret_vars
+        content {
+          name = env.value.name
+          value_source {
+            secret_key_ref {
+              secret  = one(env.value.value_from).secret_key_ref["name"]
+              version = one(env.value.value_from).secret_key_ref["key"]
+            }
+          }
+        }
+      }
+
+      ports {
+        name           = var.container_port.name
+        container_port = var.container_port.port
+      }
+    }
+
+    vpc_access {
+      network_interfaces {
+        network    = var.vpc_network
+        subnetwork = var.vpc_subnetwork
+      }
+      egress = var.vpc_egress
+    }
+  }
 
   depends_on = [
     module.service_account,
     google_secret_manager_secret_iam_member.secret_accessor
   ]
+}
+
+resource "google_cloud_run_v2_service_iam_member" "cloud_run_member" {
+  for_each = toset(var.members)
+
+  project  = var.project_id
+  location = var.region
+  name     = google_cloud_run_v2_service.cloud_run.name
+  role     = "roles/run.invoker"
+  member   = each.value
 }

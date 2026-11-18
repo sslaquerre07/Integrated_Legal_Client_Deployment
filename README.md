@@ -55,10 +55,12 @@ terraform apply
 ```
 
 The current configuration creates Cloud Run frontend/backend services, a
-Cloud SQL PostgreSQL instance and database, and a Cloud Storage bucket. The
-frontend currently permits unauthenticated access; both services still use
-sample images. See the [Terraform README](terraform/README.md)for resource 
-details, prerequisites, and state/security notes.
+Cloud SQL PostgreSQL instance and database, and a Cloud Storage bucket. Both
+Cloud Run services use Direct VPC Egress through a regional `/24` subnet with
+`ALL_TRAFFIC` routing; the backend uses private ingress and the frontend
+currently permits unauthenticated access. Both services still use sample
+images. See the [Terraform README](terraform/README.md) for resource details,
+prerequisites, and state/security notes.
 
 ---
 
