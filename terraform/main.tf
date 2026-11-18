@@ -28,10 +28,9 @@ module "frontend" {
   env_vars = [
     { name = "API_URL", value = module.backend.service_url }
   ]
-  template_annotations = {
-    "run.googleapis.com/vpc-access-connector" = module.cloud_vpc.connector_id
-    "run.googleapis.com/vpc-access-egress"    = "all-traffic"
-  }
+
+  vpc_network    = module.cloud_vpc.network_self_link
+  vpc_subnetwork = module.cloud_vpc.subnets["${var.region}/cloud-run-subnet"]["name"]
 
   members = ["allUsers"]
 }
@@ -44,10 +43,6 @@ module "backend" {
 
   image_name     = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/backend:4e4b9805926beda462040422be8c9d6b33b77555"
   container_port = { name = "http1", port = 3001 }
-  template_annotations = {
-    "run.googleapis.com/vpc-access-connector" = module.cloud_vpc.connector_id
-    "run.googleapis.com/vpc-access-egress"    = "all-traffic"
-  }
   service_annotations = {
     "run.googleapis.com/ingress" = "internal"
   }
@@ -72,13 +67,16 @@ module "backend" {
       ]
     }
   ]
+
+  vpc_network    = module.cloud_vpc.network_self_link
+  vpc_subnetwork = module.cloud_vpc.subnets["${var.region}/cloud-run-subnet"]["name"]
 }
 
-resource "google_cloud_run_service_iam_member" "authenticated_backend_access" {
+resource "google_cloud_run_v2_service_iam_member" "authenticated_backend_access" {
   project  = var.project_id
   location = var.region
   role     = "roles/run.invoker"
-  service  = module.backend.service_name
+  name     = module.backend.service_name
 
   member = "serviceAccount:${module.frontend.service_account_email}"
 }

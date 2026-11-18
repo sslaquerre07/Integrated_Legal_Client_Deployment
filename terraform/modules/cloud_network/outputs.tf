@@ -1,6 +1,6 @@
 output "vpc_name" {
   value       = module.vpc.network_name
-  description = "VPC created for serverless connector"
+  description = "VPC created for the direct VPC connection"
 }
 
 output "network_self_link" {
@@ -11,9 +11,4 @@ output "network_self_link" {
 output "subnets" {
   value       = module.vpc.subnets
   description = "VPC Subnets"
-}
-
-output "connector_id" {
-  value       = one(module.serverless_connector.connector_ids)
-  description = "VPC Connector ID"
 }

@@ -25,12 +25,6 @@ variable "service_account_project_roles" {
   default     = []
 }
 
-variable "template_annotations" {
-  description = "Cloud Run revision template annotations."
-  type        = map(string)
-  default     = {}
-}
-
 variable "service_annotations" {
   description = "Cloud Run service annotations."
   type        = map(string)
@@ -68,4 +62,18 @@ variable "members" {
   description = "IAM members to grant access to the Cloud Run service account."
   type        = list(string)
   default     = []
+}
+
+variable "vpc_network" {
+  description = "VPC network for Direct VPC Egress."
+  type        = string
+}
+variable "vpc_subnetwork" {
+  description = "Regional subnet for Direct VPC Egress."
+  type        = string
+}
+variable "vpc_egress" {
+  description = "Direct VPC Egress routing mode."
+  type        = string
+  default     = "ALL_TRAFFIC"
 }
