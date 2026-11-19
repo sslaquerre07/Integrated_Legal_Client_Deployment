@@ -25,12 +25,9 @@ variable "service_account_project_roles" {
   default     = []
 }
 
-variable "service_annotations" {
-  description = "Cloud Run service annotations."
-  type        = map(string)
-  default = {
-    "run.googleapis.com/ingress" = "all"
-  }
+variable "ingress" {
+  description = "What kind of ingress traffic to allow on a cloud run container"
+  type        = string
 }
 
 variable "container_port" {

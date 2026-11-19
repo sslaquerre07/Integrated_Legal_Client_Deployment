@@ -19,11 +19,9 @@ root configuration in `main.tf` composes these modules:
   frontend allows unauthenticated ingress; the backend allows only internal
   ingress and grants the frontend service account the Cloud Run Invoker role.
 
-The backend receives the Cloud SQL private IP as `DB_HOST` and the
-`DB_PASSWORD` secret as an environment variable. Cloud SQL private connectivity
-uses Private Services Access on the same VPC; Direct VPC Egress must have a
-route from the Cloud Run subnet to the database's private IP. Private Google
-Access is enabled on the subnet for Google API access.
+The backend receives a password-free `DATABASE_URL` containing the Cloud SQL
+private IP and database name, with the `DB_PASSWORD` secret provided separately
+as an environment variable. 
 
 The current service-to-service traffic, Cloud SQL's private IP, and Cloud
 Storage access through Google APIs do not require general internet egress:
