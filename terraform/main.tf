@@ -43,7 +43,7 @@ module "backend" {
   region       = var.region
   service_name = "ilcp-backend"
 
-  image_name     = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/backend:605ffc5c79dcd16b14a1bf8902b224a86f002298"
+  image_name     = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/backend:d4bda28e7d0b29d2cf9e684498c16336583e5aee"
   container_port = { name = "http1", port = 3001 }
   ingress        = "INGRESS_TRAFFIC_INTERNAL_ONLY"
 
