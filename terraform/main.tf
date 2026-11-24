@@ -23,7 +23,7 @@ module "frontend" {
   region       = var.region
   service_name = "ilcp-frontend"
 
-  image_name     = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/frontend:b3673745d3b73045e2ca35796cbe1ba6dd0a6f1a"
+  image_name     = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/frontend:9c3df62c34eaec6a4882e3a90af6d8f5c9a418ba"
   container_port = { name = "http1", port = 3000 }
   ingress        = "INGRESS_TRAFFIC_ALL"
 
