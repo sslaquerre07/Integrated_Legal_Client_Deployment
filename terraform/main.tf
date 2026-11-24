@@ -92,7 +92,7 @@ module "db_migration_job" {
   }
 
   command = ["node"]
-  args = ["node_modules/typeorm/cli.js", "migration:run", "-d", "/app/services/api/dist/data-source.js"]
+  args    = ["node_modules/typeorm/cli.js", "migration:run", "-d", "/app/services/api/dist/data-source.js"]
 
   env_vars = {
     DATABASE_URL = "postgresql://ilcp_user@${module.cloud_sql.private_ip_address}:5432/dev"
@@ -134,5 +134,5 @@ resource "google_cloud_run_v2_service_iam_member" "authenticated_backend_access"
   location = var.region
   role     = "roles/run.invoker"
   name     = module.backend.service_name
-  member = "serviceAccount:${module.frontend.service_account_email}"
+  member   = "serviceAccount:${module.frontend.service_account_email}"
 }
