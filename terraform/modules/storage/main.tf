@@ -14,10 +14,4 @@ resource "google_storage_bucket" "cloud_storage" {
   versioning {
     enabled = true
   }
-
-  # Prevent deletion or modification of objects for a set period (e.g., 7 years)
-  retention_policy {
-    retention_period = 220752000 # 7 years in seconds (7 * 365 * 86400)
-    is_locked        = false     # Set to true ONLY when ready to permanently lock the policy
-  }
 }
