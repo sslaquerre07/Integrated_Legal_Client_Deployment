@@ -1,7 +1,7 @@
 # Container images
 locals {
-  frontend_image = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/frontend:605ffc5c79dcd16b14a1bf8902b224a86f002298"
-  backend_image  = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/backend:d4bda28e7d0b29d2cf9e684498c16336583e5aee"
+  frontend_image = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/frontend:b17e693dec3c5212445fd22ff68dbf0af2ec7cfb"
+  backend_image  = "us-west1-docker.pkg.dev/integrated-legal-client-portal/application-images-fe-and-be/backend:b17e693dec3c5212445fd22ff68dbf0af2ec7cfb"
 }
 
 # Network and data services
